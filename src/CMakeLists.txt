@@ -62,6 +62,16 @@ set_target_properties(
     FOLDER "${NOX_FOLDER_NAME}"
 )
 
+# --------------------------------------------------
+# Generate files
+# --------------------------------------------------
+generate_export_header(
+    ${NOX_LIB_NAME}
+    EXPORT_MACRO_NAME NOX_EXPORT
+    EXPORT_FILE_NAME "${PROJECT_SOURCE_DIR}/include/nox/export.h"
+    STATIC_DEFINE NOX_STATIC
+)
+
 # -------------------------------------------------------------
 # Add sources
 # -------------------------------------------------------------
