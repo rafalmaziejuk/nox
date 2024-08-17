@@ -45,3 +45,8 @@ function(nox_extract_version)
 
     set(NOX_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" PARENT_SCOPE)
 endfunction()
+
+function(nox_append_global_list LIST ITEM)
+    set(ITEMS ${ITEM} ${ARGN})
+    set(${LIST} "${${LIST}}" ${ITEMS} CACHE INTERNAL "")
+endfunction()
