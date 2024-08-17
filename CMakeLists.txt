@@ -11,7 +11,8 @@ include(common)
 # -------------------------------------------------------------
 # Start project
 # -------------------------------------------------------------
-project(nox LANGUAGES CXX)
+nox_extract_version()
+project(nox VERSION ${NOX_VERSION} LANGUAGES CXX)
 
 # -------------------------------------------------------------
 # Set global properties
@@ -47,13 +48,14 @@ cmake_dependent_option(NOX_PLATFORM_WINDOWS "Target platform Windows" ON "WIN32"
 cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
 
 # -------------------------------------------------------------
-# Print settings
+# Print project information
 # -------------------------------------------------------------
-message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
-message(STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
+message(STATUS "nox ${NOX_VERSION}")
 message(STATUS "NOX_BUILD_SANDBOX = ${NOX_BUILD_SANDBOX}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
+message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
+message(STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
 
 # -------------------------------------------------------------
 # Add subdirectories
