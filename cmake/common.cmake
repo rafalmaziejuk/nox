@@ -21,3 +21,27 @@ macro(nox_create_project_source_tree TARGET)
         endforeach()
     endif()
 endmacro()
+
+function(nox_extract_version)
+    file(READ "${CMAKE_CURRENT_LIST_DIR}/include/nox/version.h" FILE_CONTENTS)
+    
+    string(REGEX MATCH "NOX_VERSION_MAJOR ([0-9]+)" _ "${FILE_CONTENTS}")
+    if(NOT CMAKE_MATCH_COUNT EQUAL 1)
+        message(FATAL_ERROR "Unable to extract major version number from nox/version.h")
+    endif()
+    set(VERSION_MAJOR ${CMAKE_MATCH_1})
+
+    string(REGEX MATCH "NOX_VERSION_MINOR ([0-9]+)" _ "${FILE_CONTENTS}")
+    if(NOT CMAKE_MATCH_COUNT EQUAL 1)
+        message(FATAL_ERROR "Unable extract minor version number from nox/version.h")
+    endif()
+    set(VERSION_MINOR ${CMAKE_MATCH_1})
+
+    string(REGEX MATCH "NOX_VERSION_PATCH ([0-9]+)" _ "${FILE_CONTENTS}")
+    if(NOT CMAKE_MATCH_COUNT EQUAL 1)
+        message(FATAL_ERROR "Unable to extract patch version number from nox/version.h")
+    endif()
+    set(VERSION_PATCH ${CMAKE_MATCH_1})
+
+    set(NOX_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" PARENT_SCOPE)
+endfunction()
