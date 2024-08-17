@@ -2,3 +2,6 @@
 .vs/
 .vscode/
 build/
+
+# Generated files
+include/nox/export.h
