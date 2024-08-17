@@ -41,6 +41,7 @@ set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
 # Specify options
 # -------------------------------------------------------------
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option(NOX_BUILD_SANDBOX "Build sandbox project" OFF)
 
 cmake_dependent_option(NOX_PLATFORM_WINDOWS "Target platform Windows" ON "WIN32" OFF)
 cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
@@ -50,6 +51,7 @@ cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
 # -------------------------------------------------------------
 message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message(STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
+message(STATUS "NOX_BUILD_SANDBOX = ${NOX_BUILD_SANDBOX}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
 
@@ -57,3 +59,7 @@ message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
 # Add subdirectories
 # -------------------------------------------------------------
 add_subdirectory(src)
+
+if(NOX_BUILD_SANDBOX)
+    add_subdirectory(sandbox)
+endif()
