@@ -1,12 +1,7 @@
 # -------------------------------------------------------------
 # Set internal variables
 # -------------------------------------------------------------
-if(BUILD_SHARED_LIBS)
-    set(NOX_DEBUG_POSTFIX "-d")
-else()
-    set(NOX_DEBUG_POSTFIX "-s-d")
-    set(NOX_RELEASE_POSTFIX "-s")
-endif()
+set(NOX_DEBUG_POSTFIX "-d")
 
 # -------------------------------------------------------------
 # Create nox target
@@ -17,9 +12,12 @@ target_include_directories(
     ${NOX_LIB_NAME}
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/include>"
     PRIVATE
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
+
+nox_append_global_list(NOX_INSTALLATION_TARGETS ${NOX_LIB_NAME})
 
 # -------------------------------------------------------------
 # Specify compile options
@@ -58,7 +56,6 @@ set_target_properties(
     VERSION "${NOX_VERSION}"
     SOVERSION "${NOX_VERSION_MAJOR}.${NOX_VERSION_MINOR}"
     DEBUG_POSTFIX "${NOX_DEBUG_POSTFIX}"
-    RELEASE_POSTFIX "${NOX_RELEASE_POSTFIX}"
     FOLDER "${NOX_FOLDER_NAME}"
 )
 
@@ -69,7 +66,6 @@ generate_export_header(
     ${NOX_LIB_NAME}
     EXPORT_MACRO_NAME NOX_EXPORT
     EXPORT_FILE_NAME "${PROJECT_SOURCE_DIR}/include/nox/export.h"
-    STATIC_DEFINE NOX_STATIC
 )
 
 # -------------------------------------------------------------

@@ -32,9 +32,15 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type: [Release, Debug]" FORCE)
 endif()
 
+set(NOX_MAIN_PROJECT OFF)
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    set(NOX_MAIN_PROJECT ON)
+endif()
+
 # -------------------------------------------------------------
 # Set global variables
 # -------------------------------------------------------------
+set(NOX_INSTALLATION_TARGETS "")
 set(NOX_LIB_NAME "nox")
 
 set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
@@ -43,7 +49,8 @@ set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
 # Specify options
 # -------------------------------------------------------------
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-option(NOX_BUILD_SANDBOX "Build sandbox project" OFF)
+option(NOX_INSTALL "Generate installation target" ${NOX_MAIN_PROJECT})
+option(NOX_BUILD_SANDBOX "Generate sandbox target" OFF)
 
 cmake_dependent_option(NOX_PLATFORM_WINDOWS "Target platform Windows" ON "WIN32" OFF)
 cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
@@ -52,6 +59,7 @@ cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
 # Print project information
 # -------------------------------------------------------------
 message(STATUS "nox ${NOX_VERSION}")
+message(STATUS "NOX_INSTALL = ${NOX_INSTALL}")
 message(STATUS "NOX_BUILD_SANDBOX = ${NOX_BUILD_SANDBOX}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
@@ -65,4 +73,24 @@ add_subdirectory(src)
 
 if(NOX_BUILD_SANDBOX)
     add_subdirectory(sandbox)
+endif()
+
+# -------------------------------------------------------------
+# Specify installation options
+# -------------------------------------------------------------
+if(NOX_INSTALL)
+    include(GNUInstallDirs)
+
+    install(
+        TARGETS ${NOX_INSTALLATION_TARGETS}
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    )
+
+    install(
+        DIRECTORY "${PROJECT_SOURCE_DIR}/include/nox"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        FILES_MATCHING PATTERN "*.h"
+    )
 endif()
