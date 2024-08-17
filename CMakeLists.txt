@@ -5,13 +5,16 @@ cmake_minimum_required(VERSION 3.24.0 FATAL_ERROR)
 # -------------------------------------------------------------
 include(CMakeDependentOption)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(common)
+
 # -------------------------------------------------------------
 # Start project
 # -------------------------------------------------------------
 project(nox LANGUAGES CXX)
 
 # -------------------------------------------------------------
-# Set global properties and variables
+# Set global properties
 # -------------------------------------------------------------
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -28,6 +31,13 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # -------------------------------------------------------------
+# Set global variables
+# -------------------------------------------------------------
+set(NOX_LIB_NAME "nox")
+
+set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
+
+# -------------------------------------------------------------
 # Specify options
 # -------------------------------------------------------------
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
@@ -42,3 +52,8 @@ message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message(STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
+
+# -------------------------------------------------------------
+# Add subdirectories
+# -------------------------------------------------------------
+add_subdirectory(src)
