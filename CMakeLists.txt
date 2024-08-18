@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.24.0 FATAL_ERROR)
 # Include modules
 # -------------------------------------------------------------
 include(CMakeDependentOption)
+include(FetchContent)
 include(GenerateExportHeader)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -44,6 +45,7 @@ set(NOX_INSTALLATION_TARGETS "")
 set(NOX_LIB_NAME "nox")
 
 set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
+set(NOX_THIRD_PARTY_FOLDER_NAME "${NOX_FOLDER_NAME}/third_party")
 
 # -------------------------------------------------------------
 # Specify options
@@ -51,6 +53,7 @@ set(NOX_FOLDER_NAME "${NOX_LIB_NAME}")
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(NOX_INSTALL "Generate installation target" ${NOX_MAIN_PROJECT})
 option(NOX_BUILD_SANDBOX "Generate sandbox target" OFF)
+option(NOX_BUILD_TESTS "Generate test targets" OFF)
 
 cmake_dependent_option(NOX_PLATFORM_WINDOWS "Target platform Windows" ON "WIN32" OFF)
 cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
@@ -61,6 +64,7 @@ cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
 message(STATUS "nox ${NOX_VERSION}")
 message(STATUS "NOX_INSTALL = ${NOX_INSTALL}")
 message(STATUS "NOX_BUILD_SANDBOX = ${NOX_BUILD_SANDBOX}")
+message(STATUS "NOX_BUILD_TESTS = ${NOX_BUILD_TESTS}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
 message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
@@ -73,6 +77,10 @@ add_subdirectory(src)
 
 if(NOX_BUILD_SANDBOX)
     add_subdirectory(sandbox)
+endif()
+
+if(NOX_BUILD_TESTS)
+    add_subdirectory(tests)
 endif()
 
 # -------------------------------------------------------------
