@@ -54,6 +54,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(NOX_INSTALL "Generate installation target" ${NOX_MAIN_PROJECT})
 option(NOX_BUILD_SANDBOX "Generate sandbox target" OFF)
 option(NOX_BUILD_TESTS "Generate test targets" OFF)
+option(NOX_BUILD_DOCS "Generate documentation target" OFF)
 
 cmake_dependent_option(NOX_PLATFORM_WINDOWS "Target platform Windows" ON "WIN32" OFF)
 cmake_dependent_option(NOX_PLATFORM_LINUX "Target platform Linux" ON "UNIX" OFF)
@@ -65,6 +66,7 @@ message(STATUS "nox ${NOX_VERSION}")
 message(STATUS "NOX_INSTALL = ${NOX_INSTALL}")
 message(STATUS "NOX_BUILD_SANDBOX = ${NOX_BUILD_SANDBOX}")
 message(STATUS "NOX_BUILD_TESTS = ${NOX_BUILD_TESTS}")
+message(STATUS "NOX_BUILD_DOCS = ${NOX_BUILD_DOCS}")
 message(STATUS "NOX_PLATFORM_WINDOWS = ${NOX_PLATFORM_WINDOWS}")
 message(STATUS "NOX_PLATFORM_LINUX = ${NOX_PLATFORM_LINUX}")
 message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
@@ -81,6 +83,10 @@ endif()
 
 if(NOX_BUILD_TESTS)
     add_subdirectory(tests)
+endif()
+
+if(NOX_BUILD_DOCS)
+    add_subdirectory(docs)
 endif()
 
 # -------------------------------------------------------------
