@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+
+from nox_tools import (
+    format,
+)
+
+def parse_command_line_args():
+    """
+    Parses command-line arguments. Adds subparsers to the main parser.
+
+    Returns:
+        args:
+            arguments parsed from command-line
+    """
+    parser = argparse.ArgumentParser(description='NOX CLI tool',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers(help='Commands (<command> -h for command help)',
+                                       dest='command')
+    
+    for module in [
+        format,
+    ]:
+        module.add_subparsers(subparsers)
+
+    args = parser.parse_args()
+    if 'func' not in args:
+        parser.print_help()
+        sys.exit()
+
+    return args
+
+if __name__ == '__main__':
+    try:
+        args = parse_command_line_args()
+        return_code = args.func(args)
+        if return_code is not None:
+            sys.exit(return_code)
+    except KeyboardInterrupt:
+        print('\nCancelled')
