@@ -2,6 +2,7 @@
 .vs/
 .vscode/
 build/
+tools/**/__pycache__/
 
 # Generated files
 include/nox/export.h
