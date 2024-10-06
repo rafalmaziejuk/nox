@@ -1,38 +1,29 @@
 #!/usr/bin/env python3
 
-import pathlib
-import subprocess
+from .git_utils import get_repo_sources
+from .utils import (
+    find_executable,
+    run_command_result
+)
 
-from .git_utils import get_repo_root_dir
+CLANG_FORMAT_CMD = find_executable('clang-format')
 
-CLANG_FORMAT_CMD = 'clang-format'
-
-def _get_sources():
+def _check_prerequisites():
     """
-    Returns paths to source files in this repository that have to be formatted.
+    Check prerequisites necessary for running a command.
 
+    Args:
+        args:
+            arguments parsed from command-line
     Returns:
-        str:
-            space-delimited string that contains paths to source files
+        int:
+            0 on success, 1 on failure
     """
-    extensions = ('.cpp', 
-                  '.h', 
-                  '.inl')
-    exceptions = ('export.h')
-    dirs = ('include',
-            'sandbox',
-            'src',
-            'tests')
-    repo_root_dir = get_repo_root_dir()
-
-    sources = []
-    for dir in dirs:
-        dir_path = pathlib.Path(repo_root_dir) / dir
-        sources += [str(path)
-                    for path in dir_path.rglob('*')
-                    if path.suffix in extensions and path.stem not in exceptions]
-
-    return ' '.join(sources)
+    if any([CLANG_FORMAT_CMD is None]):
+        print("Prerequisites not satisfied")
+        return 1
+    
+    return 0
 
 def _check(args):
     """
@@ -45,18 +36,12 @@ def _check(args):
         int:
             0 on success, 1 on failure
     """
-    sources = _get_sources()
-    cmd = f"{CLANG_FORMAT_CMD} -Werror --dry-run {sources}"
-    try:
-        result = subprocess.run(cmd, capture_output=True, shell=True)
-        if result.returncode != 0:
-            print(result.stderr.decode('utf-8'))
-            return 1
-    except subprocess.CalledProcessError:
-        print('clang-format check failed to run')
+    if _check_prerequisites() == 1:
         return 1
 
-    return 0
+    sources = get_repo_sources()
+    cmd = f'"{CLANG_FORMAT_CMD}" -Werror --dry-run {sources}'
+    return run_command_result(cmd)
 
 def _fix(args):
     """
@@ -69,18 +54,12 @@ def _fix(args):
         int:
             0 on success, 1 on failure
     """
-    sources = _get_sources()
-    cmd = f"{CLANG_FORMAT_CMD} -Werror --i {sources}"
-    try:
-        result = subprocess.run(cmd, capture_output=True, shell=True)
-        if result.returncode != 0:
-            print(result.stderr.decode('utf-8'))
-            return 1
-    except subprocess.CalledProcessError:
-        print('clang-format fix failed to run')
+    if _check_prerequisites() == 1:
         return 1
 
-    return 0
+    sources = get_repo_sources()
+    cmd = f'"{CLANG_FORMAT_CMD}" -Werror --i {sources}'
+    return run_command_result(cmd)
 
 def add_subparsers(subparsers):
     """
