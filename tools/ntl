@@ -5,6 +5,7 @@ import sys
 
 from nox_tools import (
     format,
+    tidy,
 )
 
 def parse_command_line_args():
@@ -22,6 +23,7 @@ def parse_command_line_args():
     
     for module in [
         format,
+        tidy,
     ]:
         module.add_subparsers(subparsers)
 
