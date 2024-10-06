@@ -1,0 +1,20 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 24,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "dev",
+            "displayName": "Preset for development",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "NOX_INSTALL": "OFF",
+                "NOX_BUILD_SANDBOX": "ON",
+                "NOX_BUILD_TESTS": "ON"
+            }
+        }
+    ]
+}
