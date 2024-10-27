@@ -22,6 +22,14 @@ macro(nox_create_project_source_tree TARGET)
     endif()
 endmacro()
 
+function(nox_setup_git_hooks)
+    message(STATUS "Copying git hooks")
+    file(GLOB GIT_HOOKS "${PROJECT_SOURCE_DIR}/hooks/*")
+    foreach(HOOK ${GIT_HOOKS})
+        file(COPY ${HOOK} DESTINATION "${PROJECT_SOURCE_DIR}/.git/hooks")
+    endforeach()
+endfunction()
+
 function(nox_extract_version)
     file(READ "${CMAKE_CURRENT_LIST_DIR}/include/nox/version.h" FILE_CONTENTS)
     

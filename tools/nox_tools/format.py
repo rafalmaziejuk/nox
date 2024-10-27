@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-#Copyright 2024 Rafal Maziejuk
-#
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-#Unless required by applicable law or agreed to in writing, software
-#distributed under the License is distributed on an "AS IS" BASIS,
-#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#See the License for the specific language governing permissions and
-#limitations under the License.
+# Copyright 2024 Rafal Maziejuk
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 from .git_utils import get_filtered_filepaths
 from .utils import (
@@ -50,10 +50,10 @@ def _check(args, sources):
             string of space-delimited paths to source files for formatting
     Returns:
         int:
-            0 on success, 1 on failure
+            0 on success, 1 on check failure, 2 on check prerequisites failure
     """
     if _check_prerequisites() == 1:
-        return 1
+        return 2
 
     cmd = f'"{CLANG_FORMAT_CMD}" -Werror --dry-run {sources}'
     return run_command_result(cmd)

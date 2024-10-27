@@ -11,6 +11,7 @@
             "displayName": "Preset for development",
             "binaryDir": "build",
             "cacheVariables": {
+                "NOX_COPY_GIT_HOOKS": "ON",
                 "NOX_INSTALL": "OFF",
                 "NOX_BUILD_SANDBOX": "ON",
                 "NOX_BUILD_TESTS": "ON"

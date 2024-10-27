@@ -16,6 +16,10 @@ include(common)
 nox_extract_version()
 project(nox VERSION ${NOX_VERSION} LANGUAGES CXX)
 
+if(NOX_COPY_GIT_HOOKS)
+    nox_setup_git_hooks()
+endif()
+
 # -------------------------------------------------------------
 # Set global properties
 # -------------------------------------------------------------
