@@ -1,31 +1,56 @@
+#Copyright 2024 Rafal Maziejuk
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
 import git
 import pathlib
 
-def get_repo_sources():
+repo = git.Repo('.', search_parent_directories=True)
+
+def get_filtered_filepaths(directories=None, extensions=None):
     """
-    Returns paths to all relevant source files in this repository.
+    Returns list of paths to files fitting the criteria.
+
+    Args:
+        directories:
+            directories that should be a part of filepaths
+        extensions:
+            extensions that should be a part of filepaths
+    Returns:
+        list[pathlib.Path]:
+            list of paths to all files
+    """
+    dirs = []
+    if directories:
+        dirs = [pathlib.Path(repo.working_tree_dir) / dir for dir in directories]
+    else:
+        dirs = [pathlib.Path(repo.working_tree_dir)]
+
+    filepaths = []
+    for dir in dirs:
+        if extensions:
+            filepaths += [path for path in dir.rglob('*') if path.suffix in extensions]
+        else:
+            filepaths += [path for path in dir.rglob('*')]
+
+    return filepaths
+
+def get_tracked_filepaths():
+    """
+    Returns list of paths to files tracked by git.
 
     Returns:
-        str:
-            space-delimited string that contains paths to source files
+        list[pathlib.Path]:
+            list of paths to tracked files
     """
-    extensions = ('.cpp', 
-                  '.h', 
-                  '.inl')
-    exceptions = ('export.h')
-    dirs = ('include',
-            'sandbox',
-            'src',
-            'tests')
-    
-    repo = git.Repo('.', search_parent_directories=True)
-    repo_root_dir = repo.working_tree_dir
-
-    sources = []
-    for dir in dirs:
-        dir_path = pathlib.Path(repo_root_dir) / dir
-        sources += [str(path)
-                    for path in dir_path.rglob('*')
-                    if path.suffix in extensions and path.stem not in exceptions]
-
-    return ' '.join(sources)
+    return [pathlib.Path(repo.working_tree_dir) / file.a_path for file in repo.index.diff('HEAD')]
