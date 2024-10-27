@@ -1,6 +1,20 @@
 #!/usr/bin/env python3
 
-from .git_utils import get_repo_sources
+#Copyright 2024 Rafal Maziejuk
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
+from .git_utils import get_filtered_filepaths
 from .utils import (
     find_executable,
     run_command_result
@@ -10,7 +24,7 @@ CLANG_FORMAT_CMD = find_executable('clang-format')
 
 def _check_prerequisites():
     """
-    Check prerequisites necessary for running a command.
+    Checks prerequisites necessary for running a command.
 
     Args:
         args:
@@ -25,13 +39,15 @@ def _check_prerequisites():
     
     return 0
 
-def _check(args):
+def _check(args, sources):
     """
     Runs clang-format check on all sources in this repository.
 
     Args:
         args:
             arguments parsed from command-line
+        sources:
+            string of space-delimited paths to source files for formatting
     Returns:
         int:
             0 on success, 1 on failure
@@ -39,17 +55,18 @@ def _check(args):
     if _check_prerequisites() == 1:
         return 1
 
-    sources = get_repo_sources()
     cmd = f'"{CLANG_FORMAT_CMD}" -Werror --dry-run {sources}'
     return run_command_result(cmd)
 
-def _fix(args):
+def _fix(args, sources):
     """
     Runs clang-format in place fix on all sources in this repository.
 
     Args:
         args:
             arguments parsed from command-line
+        sources:
+            string of space-delimited paths to source files for formatting
     Returns:
         int:
             0 on success, 1 on failure
@@ -57,7 +74,6 @@ def _fix(args):
     if _check_prerequisites() == 1:
         return 1
 
-    sources = get_repo_sources()
     cmd = f'"{CLANG_FORMAT_CMD}" -Werror --i {sources}'
     return run_command_result(cmd)
 
@@ -74,9 +90,19 @@ def add_subparsers(subparsers):
 
     format_subparsers = format_parser.add_subparsers(help='Format subcommands (<subcommand> -h for subcommand help)',
                                                      dest='command')
+    
+    dirs = ('include',
+            'sandbox',
+            'src',
+            'tests')
+    extensions = ('.cpp',
+                  '.h',
+                  '.inl')
+    sources = get_filtered_filepaths(dirs, extensions)
+    sources = ' '.join([str(source) for source in sources])
 
     format_check_parser = format_subparsers.add_parser("check", help="Check sources formatting")
-    format_check_parser.set_defaults(func=_check)
+    format_check_parser.set_defaults(func=lambda args: _check(args, sources))
 
     format_fix_parser = format_subparsers.add_parser("fix", help="Fix sources formatting")
-    format_fix_parser.set_defaults(func=_fix)
+    format_fix_parser.set_defaults(func=lambda args: _fix(args, sources))
