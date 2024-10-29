@@ -1,0 +1,60 @@
+name: unit-tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  unit-tests:
+    name: unit-tests ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      matrix:
+        platform:
+        - { name: Windows, os: windows-latest }
+        - { name: Linux,   os: ubuntu-latest  }
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install CMake and Ninja
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: latest
+        ninjaVersion: latest
+
+    - name: Install dependencies
+      run: |
+          set -e
+
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt-get update && sudo apt-get install gcovr
+          fi
+
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            pip install gcovr
+          fi
+
+    - name: Configure
+      run: cmake --preset unit-tests
+
+    - name: Run unit tests
+      run: |
+          cmake --build build --target run-unit-tests
+          gcovr --root $GITHUB_WORKSPACE -x build/coverage.out -s -f 'src/.*'
+
+#   Uncomment once repo becomes public
+#   - name: Upload coverage report to Coveralls
+#     uses: coverallsapp/github-action@v2
+#     with:
+#       file: ./build/coverage.out
+#       base-path: ${{ github.workspace }}
