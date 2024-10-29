@@ -31,6 +31,19 @@ target_compile_options(
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -Wall>
 )
 
+if(NOX_ENABLE_COVERAGE)
+    target_compile_options(
+        ${NOX_LIB_NAME}
+        PRIVATE
+        $<$<CXX_COMPILER_ID:GNU>: -O0 -g --coverage>
+    )
+    target_link_libraries(
+        ${NOX_LIB_NAME}
+        PRIVATE
+        $<$<CXX_COMPILER_ID:GNU>: --coverage>
+    )
+endif()
+
 # -------------------------------------------------------------
 # Specify compile definitions
 # -------------------------------------------------------------

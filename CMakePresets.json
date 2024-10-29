@@ -20,11 +20,25 @@
         {
             "name": "clang-tidy",
             "displayName": "Preset for running clang-tidy check",
+            "binaryDir": "build",
             "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "NOX_INSTALL": "OFF"
+            }
+        },
+        {
+            "name": "unit-tests",
+            "displayName": "Preset for running unit tests",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_SHARED_LIBS": "OFF",
+                "NOX_INSTALL": "OFF",
+                "NOX_BUILD_TESTS": "ON",
+                "NOX_ENABLE_COVERAGE": "ON"
             }
         }
     ]
