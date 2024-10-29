@@ -1,0 +1,50 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: ${{ matrix.platform.name }} ${{ matrix.config.name }} ${{ matrix.type.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      matrix:
+        platform:
+        - { name: Windows VS2022, os: windows-latest, flags: -G"Visual Studio 17 2022"                                     }
+        - { name: Windows Clang,  os: windows-latest, flags: -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Windows GCC,    os: windows-latest, flags: -GNinja -DCMAKE_C_COMPILER=gcc   -DCMAKE_CXX_COMPILER=g++     }
+        - { name: Linux Clang,    os: ubuntu-latest,  flags: -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux GCC,      os: ubuntu-latest,  flags: -GNinja -DCMAKE_C_COMPILER=gcc   -DCMAKE_CXX_COMPILER=g++     }
+
+        config:
+        - { name: Static, flags: -DBUILD_SHARED_LIBS=OFF }
+        - { name: Shared, flags: -DBUILD_SHARED_LIBS=ON }
+
+        type:
+        - { name: Release, flags: -DCMAKE_BUILD_TYPE=Release }
+        - { name: Debug,   flags: -DCMAKE_BUILD_TYPE=Debug }
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install CMake and Ninja
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: latest
+        ninjaVersion: latest
+
+    - name: Configure
+      run: cmake -S . -B build ${{ matrix.platform.flags }} ${{ matrix.config.flags }} ${{ matrix.type.flags }}
+
+    - name: Build
+      run: cmake --build build --config ${{ matrix.type.name }} --parallel
