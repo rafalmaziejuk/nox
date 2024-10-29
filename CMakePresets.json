@@ -16,17 +16,6 @@
                 "NOX_BUILD_SANDBOX": "ON",
                 "NOX_BUILD_TESTS": "ON"
             }
-        },
-        {
-            "name": "clang-tidy",
-            "displayName": "Preset for running clang-tidy check",
-            "generator": "Ninja",
-            "binaryDir": "build",
-            "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "NOX_INSTALL": "OFF"
-            }
         }
     ]
 }
