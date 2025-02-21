@@ -24,7 +24,7 @@ endmacro()
 
 function(nox_setup_git_hooks)
     message(STATUS "Copying git hooks")
-    file(GLOB GIT_HOOKS "${PROJECT_SOURCE_DIR}/hooks/*")
+    file(GLOB GIT_HOOKS "${PROJECT_SOURCE_DIR}/tools/hooks/*")
     foreach(HOOK ${GIT_HOOKS})
         file(COPY ${HOOK} DESTINATION "${PROJECT_SOURCE_DIR}/.git/hooks")
     endforeach()
