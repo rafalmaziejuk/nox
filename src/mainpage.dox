@@ -1,0 +1,9 @@
+/**
+ * @mainpage API reference Main Page
+ *
+ * @section intro Introduction
+ * This documentation provides an overview of the NOX library API.
+ * 
+ * @section license License
+ * The NOX library is licensed under [Apache 2.0 license](https://github.com/rafalmaziejuk/nox?tab=Apache-2.0-1-ov-file#readme).
+ */

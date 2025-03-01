@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Rafal Maziejuk
+// Copyright 2025 Rafal Maziejuk
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * @file
- * @brief Library version definitions
- */
+#include "common/logger.h"
 
-#pragma once
+namespace nox {
 
-#define NOX_VERSION_MAJOR 0
-#define NOX_VERSION_MINOR 1
-#define NOX_VERSION_PATCH 0
+void registerLogCallback([[maybe_unused]] LogCallback &&callback) {
+#if defined(NOX_ENABLE_LOGGING)
+    auto &logger = Logger::instance();
+    logger.m_callback = std::move(callback);
+#endif
+}
 
-#define NOX_VERSION (NOX_VERSION_MAJOR * 10000 + NOX_VERSION_MINOR * 100 + NOX_VERSION_PATCH)
+Logger &Logger::instance() {
+    static Logger s_instance;
+    return s_instance;
+}
+
+} // namespace nox
