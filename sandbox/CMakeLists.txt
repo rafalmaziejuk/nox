@@ -13,6 +13,13 @@ target_compile_features(sandbox PRIVATE cxx_std_20)
 # -------------------------------------------------------------
 set_target_properties(sandbox PROPERTIES FOLDER "${NOX_FOLDER_NAME}")
 
+if(MSVC)
+    set_property(
+        DIRECTORY ${PROJECT_SOURCE_DIR}
+        PROPERTY VS_STARTUP_PROJECT sandbox
+    )
+endif()
+
 # -------------------------------------------------------------
 # Link libraries
 # -------------------------------------------------------------

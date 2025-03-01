@@ -10,5 +10,8 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
+
+  -misc-include-cleaner,
+  -modernize-use-trailing-return-type,
 WarningsAsErrors: ''
 ...

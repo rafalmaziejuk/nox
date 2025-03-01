@@ -14,7 +14,9 @@
                 "NOX_COPY_GIT_HOOKS": "ON",
                 "NOX_INSTALL": "OFF",
                 "NOX_BUILD_SANDBOX": "ON",
-                "NOX_BUILD_TESTS": "ON"
+                "NOX_BUILD_TESTS": "ON",
+                "NOX_BUILD_DOCS": "ON",
+                "NOX_ENABLE_LOGGING": "ON"
             }
         },
         {

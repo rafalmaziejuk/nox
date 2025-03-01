@@ -53,7 +53,7 @@ PROJECT_NUMBER         = @NOX_VERSION@
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "A cross-platfrom and open-source library for 3D graphics and computing"
+PROJECT_BRIEF          = "A cross-platfrom library for graphics and computing"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -908,6 +908,7 @@ WARN_LOGFILE           = "@PROJECT_BINARY_DIR@/docs/warnings.txt"
 
 INPUT                  = "@PROJECT_SOURCE_DIR@/include/nox" \
                          "@PROJECT_SOURCE_DIR@/src" \
+                         "@PROJECT_SOURCE_DIR@/src/mainpage.dox" \
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1079,7 +1080,7 @@ SOURCE_BROWSER         = YES
 # classes and enums directly into the documentation.
 # The default value is: NO.
 
-INLINE_SOURCES         = YES
+INLINE_SOURCES         = NO
 
 # Setting the STRIP_CODE_COMMENTS tag to YES will instruct doxygen to hide any
 # special comment blocks from generated source code fragments. Normal C, C++ and
@@ -2373,7 +2374,7 @@ HIDE_UNDOC_RELATIONS   = YES
 # set to NO
 # The default value is: YES.
 
-HAVE_DOT               = YES
+HAVE_DOT               = NO
 
 # The DOT_NUM_THREADS specifies the number of dot invocations doxygen is allowed
 # to run in parallel. When set to 0 doxygen will base this on the number of
