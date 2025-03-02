@@ -52,7 +52,7 @@ using LogCallback = std::function<void(LogLevel, std::string_view, std::string_v
  *
  * @param[in] callback Function to be called whenever a log event occurs
  *
- * @note If `NOX_ENABLE_LOGGING` is `OFF` then does nothing.
+ * @note If `NOX_ENABLE_LOGGING` is `OFF` then registered callback will never be called.
  * @note Has to be called before any other NOX function.
  */
 void registerLogCallback(LogCallback &&callback);

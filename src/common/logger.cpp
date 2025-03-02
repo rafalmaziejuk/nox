@@ -16,11 +16,9 @@
 
 namespace nox {
 
-void registerLogCallback([[maybe_unused]] LogCallback &&callback) {
-#if defined(NOX_ENABLE_LOGGING)
+void registerLogCallback(LogCallback &&callback) {
     auto &logger = Logger::instance();
     logger.m_callback = std::move(callback);
-#endif
 }
 
 Logger &Logger::instance() {
