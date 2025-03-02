@@ -4,7 +4,7 @@
 add_library(${NOX_COMMON_LIB_NAME} STATIC)
 target_include_directories(
     ${NOX_COMMON_LIB_NAME}
-    PRIVATE
+    PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 

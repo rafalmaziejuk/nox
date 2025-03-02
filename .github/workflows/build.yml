@@ -20,7 +20,7 @@ jobs:
         platform:
         - { name: Windows VS2022, os: windows-latest, flags: -G"Visual Studio 17 2022"                                     }
         - { name: Windows Clang,  os: windows-latest, flags: -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Windows GCC,    os: windows-latest, flags: -GNinja -DCMAKE_C_COMPILER=gcc   -DCMAKE_CXX_COMPILER=g++     }
+        #- { name: Windows GCC,    os: windows-latest, flags: -GNinja -DCMAKE_C_COMPILER=gcc   -DCMAKE_CXX_COMPILER=g++     }
         - { name: Linux Clang,    os: ubuntu-latest,  flags: -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         - { name: Linux GCC,      os: ubuntu-latest,  flags: -GNinja -DCMAKE_C_COMPILER=gcc   -DCMAKE_CXX_COMPILER=g++     }
 

@@ -20,6 +20,20 @@ gtest_discover_tests(${NOX_UNIT_TESTS_EXE_NAME})
 # -------------------------------------------------------------
 target_compile_features(${NOX_UNIT_TESTS_EXE_NAME} PUBLIC cxx_std_20)
 
+if(NOX_ENABLE_COVERAGE)
+    target_compile_options(
+        ${NOX_UNIT_TESTS_EXE_NAME}
+        PRIVATE
+        $<$<CXX_COMPILER_ID:GNU>: -O0 -g --coverage>
+    )
+
+    target_link_libraries(
+        ${NOX_UNIT_TESTS_EXE_NAME}
+        PRIVATE
+        $<$<CXX_COMPILER_ID:GNU>: --coverage>
+    )
+endif()
+
 # -------------------------------------------------------------
 # Specify compile definitions
 # -------------------------------------------------------------
@@ -34,6 +48,9 @@ target_link_libraries(
     ${NOX_UNIT_TESTS_EXE_NAME}
     PRIVATE
     GTest::gtest_main
+    GTest::gmock_main
+    nox
+    nox-common
 )
 
 # -------------------------------------------------------------
@@ -64,7 +81,7 @@ target_precompile_headers(
 set(NOX_UNIT_TESTS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger_tests.cpp
 )
 
 target_sources(${NOX_UNIT_TESTS_EXE_NAME} PRIVATE ${NOX_UNIT_TESTS_SOURCES})

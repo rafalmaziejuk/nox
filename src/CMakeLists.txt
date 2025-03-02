@@ -21,11 +21,6 @@ target_include_directories(
 # -------------------------------------------------------------
 add_library(${NOX_LIB_NAME})
 add_library(${NOX_LIB_NAME}::${NOX_LIB_NAME} ALIAS ${NOX_LIB_NAME})
-target_include_directories(
-    ${NOX_LIB_NAME}
-    PRIVATE
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
-)
 
 nox_append_global_list(NOX_INSTALLATION_TARGETS ${NOX_LIB_NAME})
 
